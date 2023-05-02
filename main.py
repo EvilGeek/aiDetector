@@ -64,8 +64,8 @@ def apiHome():
 @app.route("/api/detectText/", methods=["POST", "GET"])
 def apiMain():
 	if request.method=="POST":
-		if request.form.get("text"):
-			text=request.form.get("text")
+		if request.form.get("text") or request.get_json().get("text"):
+			text=request.form.get("text") if request.form.get("text") else request.get_json().get("text")
 			if text in [None, '']:
 				return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Please input more text for a more accurate result.")
 			data=chk(text)
