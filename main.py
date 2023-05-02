@@ -30,7 +30,7 @@ def chk(text):
             feedback=None if response["data"]["additional_feedback"]=='' else response["data"]["additional_feedback"]
             return jsonify(status=True, isHuman= response["data"]["isHuman"], aiSentences= response["data"]["h"], textWords=response["data"]["textWords"], aiWords= response["data"]["aiWords"], fakePercentage= response['data']["fakePercentage"], otherFeedback= feedback)
         else:
-            return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Something went wrong.)
+            return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Something went wrong.")
     except Exception as e:
         print(e)
         return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= None)
