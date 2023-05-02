@@ -22,19 +22,39 @@ def chk(text):
         "input_text": text
     }
     data=json.dumps(data)
-    #{'success': True, 'data': {'sentences': [], 'isHuman': 0, 'additional_feedback': '', 'h': ['Artificial Intelligence (AI) is a rapidly growing field of computer science that focuses on creating intelligent machines.', 'These machines are capable of performing tasks that typically require human-like intelligence, such as perception, reasoning, learning, and decision-making.', 'AI technologies, including machine learning, natural language processing, and computer vision, are increasingly being used in various industries, including healthcare, finance, transportation, and manufacturing.', "With the continued advancements in AI research and development, experts believe that AI will play an increasingly critical role in shaping the future of society and help solve some of the world's most pressing problems.", 'As such, AI is poised to revolutionize the way we live and work, and its impact is only set to grow in the years to come.'], 'hi': [], 'textWords': 121, 'aiWords': 121, 'fakePercentage': 100.0, 'specialIndexes': [], 'specialSentences': [], 'input_text': ''}, 'code': 200, 'message': 'Detection complete'}
-
     try:
         response = requests.post(url, headers=headers, data=data).json()
-        if response.get("success")==True:
-            feedback=None if response["data"]["additional_feedback"]=='' else response["data"]["additional_feedback"]
-            return jsonify(status=True, isHuman= response["data"]["isHuman"], aiSentences= response["data"]["h"], textWords=response["data"]["textWords"], aiWords= response["data"]["aiWords"], fakePercentage= response['data']["fakePercentage"], otherFeedback= feedback)
-        else:
-            return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Something went wrong.")
+        if response.get("success"):
+            feedback = response["data"]["additional_feedback"] or None
+            return jsonify(
+                status=True,
+                isHuman=response["data"]["isHuman"],
+                aiSentences=response["data"]["h"],
+                textWords=response["data"]["textWords"],
+                aiWords=response["data"]["aiWords"],
+                fakePercentage=response['data']["fakePercentage"],
+                otherFeedback=feedback
+            )
+        return jsonify(
+            status=False,
+            isHuman=None,
+            sentences=None,
+            textWords=None,
+            aiWords=None,
+            fakePercentage=None,
+            otherFeedback="Something went wrong."
+        )
     except Exception as e:
-        print(e)
-        return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= None)
-
+        error_message = f"Error: {str(e)}"
+        return jsonify(
+            status=False,
+            isHuman=None,
+            sentences=None,
+            textWords=None,
+            aiWords=None,
+            fakePercentage=None,
+            otherFeedback=error_message
+        )
 
 @app.route("/")
 def apiHome():
@@ -53,7 +73,7 @@ def apiMain():
 		else:
 			return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Please input more text for a more accurate result.")
 	else:
-		return return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Please use POST method.")
+		return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Please use POST method.")
 
 
 
