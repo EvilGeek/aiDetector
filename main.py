@@ -30,7 +30,7 @@ def chk(text):
             feedback=None if response["data"]["additional_feedback"]=='' else response["data"]["additional_feedback"]
             return jsonify(status=True, isHuman= response["data"]["isHuman"], aiSentences= response["data"]["h"], textWords=response["data"]["textWords"], aiWords= response["data"]["aiWords"], fakePercentage= response['data']["fakePercentage"], otherFeedback= feedback)
         else:
-            return 
+            return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Something went wrong.)
     except Exception as e:
         print(e)
         return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= None)
@@ -47,13 +47,13 @@ def apiMain():
 		if request.form.get("text"):
 			text=request.form.get("text")
 			if text in [None, '']:
-				return '{"status": False, "isHuman": None, "sentences": None, "textWords": None, "aiWords": None, "fakePercentage": None, "otherFeedback": "Please input more text for a more accurate result."}'
+				return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Please input more text for a more accurate result.")
 			data=chk(text)
 			return data
 		else:
-			return '{"status": False, "isHuman": None, "sentences": None, "textWords": None, "aiWords": None, "fakePercentage": None, "otherFeedback": "Please input more text for a more accurate result."}'
+			return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Please input more text for a more accurate result.")
 	else:
-		return '{"status": False, "isHuman": None, "sentences": None, "textWords": None, "aiWords": None, "fakePercentage": None, "otherFeedback": "Please use POST method."}'
+		return return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= "Please use POST method.")
 
 
 
