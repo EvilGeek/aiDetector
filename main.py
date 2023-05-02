@@ -28,10 +28,12 @@ def chk(text):
         response = requests.post(url, headers=headers, data=data).json()
         if response.get("success")==True:
             feedback=None if response["data"]["additional_feedback"]=='' else response["data"]["additional_feedback"]
-            return json.dumps({"status": True, "isHuman": response["data"]["isHuman"], "aiSentences": response["data"]["h"], "textWords": response["data"]["textWords"], "aiWords": response["data"]["aiWords"], "fakePercentage": response['data']["fakePercentage"], "otherFeedback": feedback})
+            return jsonify(status=True, isHuman= response["data"]["isHuman"], aiSentences= response["data"]["h"], textWords=response["data"]["textWords"], aiWords= response["data"]["aiWords"], fakePercentage= response['data']["fakePercentage"], otherFeedback= feedback)
+        else:
+            return 
     except Exception as e:
         print(e)
-        return json.dumps({"status": False, "isHuman": None, "sentences": None, "textWords": None, "aiWords": None, "fakePercentage": None, "otherFeedback": None})
+        return jsonify(status= False, isHuman= None, sentences= None, textWords= None, aiWords= None, fakePercentage= None, otherFeedback= None)
 
 
 @app.route("/")
